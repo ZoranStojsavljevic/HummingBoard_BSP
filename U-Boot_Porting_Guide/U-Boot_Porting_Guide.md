@@ -76,11 +76,14 @@ generated: SPL and u-boot.img.
 
 In order to flash the SD card with u-boot components.
 
-Erase partition table/labels on microSD card:
+PLEASE, BE EXTREMELY CAREFULL, use: $ sudo fdisk -l
+to check on which partition is the SD card!
+
+Erase partition table/labels on microSD card (PLEASE, BE EXTREMELY CAREFULL):
 
 	$ sudo dd if=/dev/zero of=${DISK} bs=1M count=10
 
-Assuming ${DISK} is /dev/sdb :
+Assuming ${DISK} is /dev/sdb (PLEASE, BE EXTREMELY CAREFULL not to erase HDD/SSD):
 
 	$ sudo dd if=/dev/zero of=/dev/sdb bs=1M count=10
 
@@ -105,19 +108,3 @@ root on the SD card device node to grant permissions to users.
 
 To verify if u-boot works, please, insert SD card into the board and try to boot.
 It should stop in u-boot monitor with prompt => .
-
-### Create User / partition for the rootfs:
-
-	$ echo "Create primary partition 1 for rootfs"
-	$ sudo echo -e "n\np\n1\n\n+16384M\nw\n" | fdisk ${DISK}
-
-	$ echo "Formatting primary partition ${DISK} for rootfs"
-	$ sudo mkfs.ext4 -F ${DISK}
-
-Replacing ${DISK} with assumed microSD card's /dev/sdb partition:
-
-	$ echo "Creating a primary partition 1 for rootfs"
-	$ sudo echo -e "n\np\n1\n\n+16384M\nw\n" | /sbin/fdisk /dev/sdb
-
-	$ echo "Formatting a primary partition sdb1 for rootfs"
-	$ sudo mkfs.ext4 -F /dev/sdb1
